@@ -6,7 +6,6 @@
   <artifactId>order</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-
   <name>order</name>
   <url>http://maven.apache.org</url>
  <properties>
@@ -39,7 +38,7 @@
   
   <profiles>
   	<profile>
-  		<id>BuildPlaceOrder</id>
+  		<id>BuildPlaceOrders</id>
   		<activation>
   			<activeByDefault>false</activeByDefault>
   		</activation>

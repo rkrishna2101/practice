@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.flipkart</groupId>
+    <artifactId>order</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <groupId>com.flipkart</groupId>
+  <artifactId>placeorder</artifactId>
+  <version>0.0.1</version>
+  <name>placeorder</name>
+  <url>http://maven.apache.org</url>
+  <packaging>jar</packaging>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spring.version>4.2.1.RELEASE</spring.version>
+    <test.prop>test</test.prop>
+    <env></env>
+    
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-context</artifactId>
+    	<!-- <scope>provided</scope> -->
+    </dependency>
+  </dependencies>
+  
+  <build>
+  <filters>
+  	<filter>
+  		${basedir}/src/main/filter.properties
+  	</filter>
+  </filters>
+  <finalName>placeorder</finalName>
+  	<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>    
+					<includes>
+						<include>**/*.java</include> 
+					</includes> 
+					
+					<forkMode>once</forkMode>
+					 <!-- <argLine>-Xmx1024m -javaagent:'${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar'</argLine> -->
+				</configuration>
+			</plugin>
+			 <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<warName>test1</warName>
+					<outputDirectory>${basedir}</outputDirectory>
+					<warSourceDirectory></warSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>war</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+  </build>
+  <profiles>
+  	<profile>
+  		<id>envSpecific</id>
+  		<activation>
+  			<activeByDefault>false</activeByDefault>
+  		</activation>
+  		<build>
+  		<plugins>
+  		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<warName>test${env}</warName>
+					<outputDirectory>${basedir}</outputDirectory>
+					<warSourceDirectory></warSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>war</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>	
+		<resources>
+			<resource>
+				<directory>src/main/environment/${env}</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+  		</build>
+  	</profile>
+  	
+  	<profile>
+  		<id>X</id>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  			<property>
+  				<name>env</name>
+  				<value>X</value>
+  			</property>
+  		</activation>
+  		<properties>
+				<skipMinify>true</skipMinify>
+				<maven.test.skip>false</maven.test.skip>
+		</properties>
+  	</profile>
+  	
+  	<profile>
+  		<id>DEV</id>
+  		<activation>
+  			<activeByDefault>false</activeByDefault>
+  			<property>
+  				<name>env</name>
+  				<value>DEV</value>
+  			</property>
+  			
+  		</activation>
+  		<properties>
+  			<maven.test.skip>true</maven.test.skip>
+  		</properties>
+  	</profile>
+  	
+  	<profile>
+		<id>ListBuildProfiles</id>
+		<activation>
+			<activeByDefault>false</activeByDefault>
+		</activation>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-help-plugin</artifactId>
+					<version>2.1.1</version>
+					<executions>
+						<execution>
+							<phase>initialize</phase>
+							<goals>
+								<goal>all-profiles</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+			
+			
+		
+			
+		</build>
+	</profile>
+  </profiles>
+  
+  
+  <repositories>
+  		<!-- <repository>
+			<id>repository.springframework.maven.release</id>
+			<name>Spring Framework Maven Release Repository</name>
+			<url>http://maven.springframework.org/release</url>
+		</repository> -->
+  	<repository>
+  		<id>internal-repo</id>
+  		<url>http://localhost:8081/nexus/content/repositories/internal-repo/</url>
+  		<releases>
+  			<enabled>true</enabled>
+  			<updatePolicy>always</updatePolicy>
+  			<checksumPolicy>warn</checksumPolicy>
+  		</releases>
+  	</repository>
+  </repositories>
+  
+  <!-- <distributionManagement>
+  	<repository>
+  		<id>internal-repo</id>
+  		<url>http://localhost:8081/nexus/content/repositories/internal-repo/</url>
+  	</repository>
+  </distributionManagement> -->
+</project>
